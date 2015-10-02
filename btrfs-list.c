@@ -114,6 +114,15 @@ static struct {
 static btrfs_list_filter_func all_filter_funcs[];
 static btrfs_list_comp_func all_comp_funcs[];
 
+enum btrfs_list_time_format_enum {
+	BTRFS_LIST_TIME_FORMAT_SHORT,
+	BTRFS_LIST_TIME_FORMAT_ISO,
+	BTRFS_LIST_TIME_FORMAT_UNIX,
+	BTRFS_LIST_TIME_FORMAT_LOCALE,
+};
+
+static enum btrfs_list_time_format_enum btrfs_list_time_format = BTRFS_LIST_TIME_FORMAT_SHORT;
+
 void btrfs_list_setup_print_column(enum btrfs_list_column_enum column)
 {
 	int i;
@@ -1330,10 +1339,35 @@ static int __list_subvol_fill_paths(int fd, struct root_lookup *root_lookup)
 	return 0;
 }
 
+static void print_timestamp(time_t time)
+{
+	char tstr[256];
+	struct tm tm;
+
+	switch(btrfs_list_time_format) {
+		case BTRFS_LIST_TIME_FORMAT_SHORT:
+			localtime_r(&time, &tm);
+			strftime(tstr, 256, "%Y-%m-%d %X", &tm);
+			break;
+		case BTRFS_LIST_TIME_FORMAT_ISO:
+			localtime_r(&time, &tm);
+			strftime(tstr, 256, "%FT%T%z", &tm);
+			break;
+		case BTRFS_LIST_TIME_FORMAT_UNIX:
+			gmtime_r(&time, &tm);
+			strftime(tstr, 256, "%s", &tm);
+			break;
+		case BTRFS_LIST_TIME_FORMAT_LOCALE:
+			localtime_r(&time, &tm);
+			strftime(tstr, 256, "%c", &tm);
+			break;
+	}
+	printf("%s", tstr);
+}
+
 static void print_subvolume_column(struct root_info *subv,
 				   enum btrfs_list_column_enum column)
 {
-	char tstr[256];
 	char uuidparse[BTRFS_UUID_UNPARSED_SIZE];
 
 	BUG_ON(column >= BTRFS_LIST_ALL || column < 0);
@@ -1355,14 +1389,10 @@ static void print_subvolume_column(struct root_info *subv,
 		printf("%llu", subv->top_id);
 		break;
 	case BTRFS_LIST_OTIME:
-		if (subv->otime) {
-			struct tm tm;
-
-			localtime_r(&subv->otime, &tm);
-			strftime(tstr, 256, "%Y-%m-%d %X", &tm);
-		} else
-			strcpy(tstr, "-");
-		printf("%s", tstr);
+		if (subv->otime)
+			print_timestamp(subv->otime);
+		else
+			printf("-");
 		break;
 	case BTRFS_LIST_UUID:
 		if (uuid_is_null(subv->uuid))
@@ -1905,6 +1935,23 @@ int btrfs_list_parse_filter_string(char *opt_arg,
 		break;
 	}
 
+	return 0;
+}
+
+int btrfs_list_parse_time_format(const char *format)
+{
+	if (strcmp(format, "short") == 0)
+		btrfs_list_time_format = BTRFS_LIST_TIME_FORMAT_SHORT;
+	else if (strcmp(format, "unix") == 0)
+		btrfs_list_time_format = BTRFS_LIST_TIME_FORMAT_UNIX;
+	else if (strcmp(format, "locale") == 0)
+		btrfs_list_time_format = BTRFS_LIST_TIME_FORMAT_LOCALE;
+	else if (strcmp(optarg, "iso") == 0)
+		btrfs_list_time_format = BTRFS_LIST_TIME_FORMAT_ISO;
+	else {
+		fprintf(stderr, "Unknown time format %s\n", format);
+		return 1;
+	};
 	return 0;
 }
 

@@ -447,6 +447,8 @@ static const char * const cmd_subvol_list_usage[] = {
 	"             list the subvolume in order of gen, ogen, rootid or path",
 	"             you also can add '+' or '-' in front of each items.",
 	"             (+:ascending, -:descending, ascending default)",
+	"--time-format=short|iso|unix|locale",
+	"             print timestamps in given format",
 	NULL,
 };
 
@@ -472,6 +474,7 @@ static int cmd_subvol_list(int argc, char **argv)
 		int c;
 		static const struct option long_options[] = {
 			{"sort", required_argument, NULL, 'S'},
+			{"time-format", required_argument, NULL, 'T'},
 			{NULL, 0, NULL, 0}
 		};
 
@@ -550,6 +553,13 @@ static int cmd_subvol_list(int argc, char **argv)
 		case 'S':
 			ret = btrfs_list_parse_sort_string(optarg,
 							   &comparer_set);
+			if (ret) {
+				uerr = 1;
+				goto out;
+			}
+			break;
+		case 'T':
+			ret = btrfs_list_parse_time_format(optarg);
 			if (ret) {
 				uerr = 1;
 				goto out;

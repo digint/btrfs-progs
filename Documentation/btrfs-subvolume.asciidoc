@@ -137,6 +137,9 @@ you can add \'\+' or \'-' in front of each items, \'+' means ascending,
 for --sort you can combine some items together by \',', just like
 -sort=+ogen,-gen,path,rootid.
 
+--time-format=short|iso|unix|locale::::
+print times in format: short, ISO 8601, unix (seconds), or current locale.
+
 *set-default* <id> <path>::
 Set the subvolume of the filesystem <path> which is mounted as
 default.

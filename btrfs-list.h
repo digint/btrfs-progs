@@ -159,6 +159,7 @@ int btrfs_list_parse_sort_string(char *optarg,
 int btrfs_list_parse_filter_string(char *optarg,
 				   struct btrfs_list_filter_set **filters,
 				   enum btrfs_list_filter_enum type);
+int btrfs_list_parse_time_format(const char *format);
 void btrfs_list_setup_print_column(enum btrfs_list_column_enum column);
 struct btrfs_list_filter_set *btrfs_list_alloc_filter_set(void);
 void btrfs_list_free_filter_set(struct btrfs_list_filter_set *filter_set);
