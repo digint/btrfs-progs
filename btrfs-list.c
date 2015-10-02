@@ -45,12 +45,12 @@ struct root_lookup {
 };
 
 static struct {
-	char	*name;
+	char	*name;  /* machine-readable column identifier: [a-z_]+ */
 	char	*column_name;
 	int	need_print;
 } btrfs_list_columns[] = {
 	{
-		.name		= "ID",
+		.name		= "id",
 		.column_name	= "ID",
 		.need_print	= 0,
 	},
@@ -70,7 +70,7 @@ static struct {
 		.need_print	= 0,
 	},
 	{
-		.name		= "top level",
+		.name		= "top_level",
 		.column_name	= "Top Level",
 		.need_print	= 0,
 	},
@@ -1457,13 +1457,10 @@ static void print_single_volume_info_table(struct root_info *subv)
 		if (!btrfs_list_columns[i].need_print)
 			continue;
 
+		if (i != 0)
+			printf(" ");
+
 		print_subvolume_column(subv, i);
-
-		if (i != BTRFS_LIST_PATH)
-			printf("\t");
-
-		if (i == BTRFS_LIST_TOP_LEVEL)
-			printf("\t");
 	}
 	printf("\n");
 }
@@ -1488,30 +1485,17 @@ static void print_single_volume_info_default(struct root_info *subv)
 static void print_all_volume_info_tab_head(void)
 {
 	int i;
-	int len;
-	char barrier[20];
 
 	for (i = 0; i < BTRFS_LIST_ALL; i++) {
-		if (btrfs_list_columns[i].need_print)
-			printf("%s\t", btrfs_list_columns[i].name);
+		if (!btrfs_list_columns[i].need_print)
+			continue;
 
-		if (i == BTRFS_LIST_ALL-1)
-			printf("\n");
+		if (i != 0)
+			printf(" ");
+
+		printf(btrfs_list_columns[i].name);
 	}
-
-	for (i = 0; i < BTRFS_LIST_ALL; i++) {
-		memset(barrier, 0, sizeof(barrier));
-
-		if (btrfs_list_columns[i].need_print) {
-			len = strlen(btrfs_list_columns[i].name);
-			while (len--)
-				strcat(barrier, "-");
-
-			printf("%s\t", barrier);
-		}
-		if (i == BTRFS_LIST_ALL-1)
-			printf("\n");
-	}
+	printf("\n");
 }
 
 static void print_all_volume_info(struct root_lookup *sorted_tree,
