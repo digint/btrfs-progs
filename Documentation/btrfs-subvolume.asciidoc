@@ -114,6 +114,8 @@ print the UUID of the subvolume.
 print the parent uuid of subvolumes (and snapshots).
 -R::::
 print the UUID of the sent subvolume, where the subvolume is the result of a receive operation
+-A::::
+print all available subvolume information.
 -t::::
 print the result as a table.
 -s::::

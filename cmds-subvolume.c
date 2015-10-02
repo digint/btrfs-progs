@@ -432,6 +432,7 @@ static const char * const cmd_subvol_list_usage[] = {
 	"-u           print the uuid of subvolumes (and snapshots)",
 	"-q           print the parent uuid of the snapshots",
 	"-R           print the uuid of the received snapshots",
+	"-A           print all available subvolume information",
 	"-t           print the result as a table",
 	"-s           list snapshots only in the filesystem",
 	"-r           list readonly subvolumes (including snapshots)",
@@ -475,7 +476,7 @@ static int cmd_subvol_list(int argc, char **argv)
 		};
 
 		c = getopt_long(argc, argv,
-				    "acdgopqsurRG:C:t", long_options, NULL);
+				    "acdgopqsurRAG:C:t", long_options, NULL);
 		if (c < 0)
 			break;
 
@@ -518,6 +519,9 @@ static int cmd_subvol_list(int argc, char **argv)
 			break;
 		case 'R':
 			btrfs_list_setup_print_column(BTRFS_LIST_RUUID);
+			break;
+		case 'A':
+			btrfs_list_setup_print_column(BTRFS_LIST_ALL);
 			break;
 		case 'r':
 			flags |= BTRFS_ROOT_SUBVOL_RDONLY;
