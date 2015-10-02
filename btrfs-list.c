@@ -80,6 +80,11 @@ static struct {
 		.need_print	= 0,
 	},
 	{
+		.name		= "flags",
+		.column_name	= "Flags",
+		.need_print	= 0,
+	},
+	{
 		.name		= "parent_uuid",
 		.column_name	= "Parent UUID",
 		.need_print	= 0,
@@ -1379,6 +1384,15 @@ static void print_subvolume_column(struct root_info *subv,
 		else
 			uuid_unparse(subv->ruuid, uuidparse);
 		printf("%s", uuidparse);
+		break;
+	case BTRFS_LIST_FLAGS:
+		if (subv->flags == 0) {
+			printf("-");
+		} else {
+			/* comma-separated list of all available flags */
+			if(subv->flags & BTRFS_ROOT_SUBVOL_RDONLY)
+				printf("readonly");
+		}
 		break;
 	case BTRFS_LIST_PATH:
 		BUG_ON(!subv->full_path);
