@@ -36,12 +36,14 @@ function gen_splitcmd {
         -e "s|@BTRFS_SPLITCMD_ENTRY@|${entry}|g" \
         splitcmd.c.in >> $dest
 
-    echo "${name//-/_}_fcaps = \"${caps}\"" >> $makefile_out
+    splitcmd_list="${splitcmd_list} ${name}";
+    setcap_lines="${setcap_lines}\n${name//-/_}_fcaps = \"${caps}\""
 }
 
-echo "generating: ${makefile_out}"
-echo -e "# capabilities(7) for splitcmd executables\n" > $makefile_out
 
+#
+# generate c-files
+#
 gen_splitcmd "btrfs-subvolume-show" \
              "cmds-subvolume.c" "cmd_subvol_show" \
              "cap_sys_admin,cap_fowner,cap_dac_read_search"
@@ -73,3 +75,12 @@ gen_splitcmd "btrfs-filesystem-usage" \
 gen_splitcmd "btrfs-qgroup-destroy" \
              "cmds-qgroup.c" "cmd_qgroup_destroy" \
              "cap_sys_admin,cap_dac_override"
+
+
+#
+# generate Makefile includes
+#
+echo "generating: ${makefile_out}"
+echo -e "# capabilities(7) for splitcmd executables" > $makefile_out
+echo -e "\nprogs_splitcmd =$splitcmd_list" >> $makefile_out
+echo -e "${setcap_lines}" >> $makefile_out

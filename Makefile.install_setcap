@@ -1,5 +1,7 @@
 # capabilities(7) for splitcmd executables
 
+progs_splitcmd = btrfs-subvolume-show btrfs-subvolume-list btrfs-subvolume-snapshot btrfs-subvolume-delete btrfs-send btrfs-receive btrfs-filesystem-usage btrfs-qgroup-destroy
+
 btrfs_subvolume_show_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
 btrfs_subvolume_list_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
 btrfs_subvolume_snapshot_fcaps = "cap_sys_admin,cap_fowner,cap_dac_override,cap_dac_read_search"
