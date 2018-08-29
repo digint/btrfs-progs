@@ -39,6 +39,7 @@ AC_PROG_LN_S
 AC_CHECK_TOOL([AR], [ar])
 AC_PATH_PROG([RM], [rm], [rm])
 AC_PATH_PROG([RMDIR], [rmdir], [rmdir])
+AC_PATH_PROG([SETCAP], [setcap], [setcap])
 
 
 AC_CHECK_FUNCS([openat], [],
