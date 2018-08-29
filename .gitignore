@@ -42,6 +42,15 @@ library-test-static
 /fssum
 testsuite-id
 
+btrfs-filesystem-usage
+btrfs-qgroup-destroy
+btrfs-receive
+btrfs-send
+btrfs-subvolume-delete
+btrfs-subvolume-list
+btrfs-subvolume-show
+btrfs-subvolume-snapshot
+
 /tests/*-tests-results.txt
 /tests/test-console.txt
 /tests/test.img
