@@ -246,15 +246,8 @@ progs_install_splitcmd = $(progs_splitcmd)
 
 INSTALL_SETCAP_FLAGS = -m710 -gbtrfs
 
-# linux capabilities(7) needed; used by "install-splitcmd-setcap-%" below
-btrfs_subvolume_show_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
-btrfs_subvolume_list_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
-btrfs_subvolume_snapshot_fcaps = "cap_sys_admin,cap_fowner,cap_dac_override,cap_dac_read_search"
-btrfs_subvolume_delete_fcaps = "cap_sys_admin,cap_dac_override"
-btrfs_send_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
-btrfs_receive_fcaps = "cap_sys_admin,cap_fowner,cap_chown,cap_mknod,cap_setfcap,cap_dac_override,cap_dac_read_search"
-btrfs_filesystem_usage_fcaps = "cap_sys_admin"
-btrfs_qgroup_destroy_fcaps = "cap_sys_admin,cap_dac_override"
+# defines btrfs_*_caps; used by "install-splitcmd-setcap-%" below
+include Makefile.install_setcap
 
 # external libs required by various binaries; for btrfs-foo,
 # specify btrfs_foo_libs = <list of libs>; see $($(subst...)) rules below

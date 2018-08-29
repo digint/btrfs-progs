@@ -35,7 +35,12 @@ function gen_splitcmd {
     sed -e "s|@BTRFS_SPLITCMD_CFILE_INCLUDE@|${cfile}|g" \
         -e "s|@BTRFS_SPLITCMD_ENTRY@|${entry}|g" \
         splitcmd.c.in >> $dest
+
+    echo "${name//-/_}_fcaps = \"${caps}\"" >> $makefile_out
 }
+
+echo "generating: ${makefile_out}"
+echo -e "# capabilities(7) for splitcmd executables\n" > $makefile_out
 
 gen_splitcmd "btrfs-subvolume-show" \
              "cmds-subvolume.c" "cmd_subvol_show" \

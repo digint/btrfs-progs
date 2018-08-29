@@ -1,0 +1,10 @@
+# capabilities(7) for splitcmd executables
+
+btrfs_subvolume_show_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
+btrfs_subvolume_list_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
+btrfs_subvolume_snapshot_fcaps = "cap_sys_admin,cap_fowner,cap_dac_override,cap_dac_read_search"
+btrfs_subvolume_delete_fcaps = "cap_sys_admin,cap_dac_override"
+btrfs_send_fcaps = "cap_sys_admin,cap_fowner,cap_dac_read_search"
+btrfs_receive_fcaps = "cap_sys_admin,cap_fowner,cap_chown,cap_mknod,cap_setfcap,cap_dac_override,cap_dac_read_search"
+btrfs_filesystem_usage_fcaps = "cap_sys_admin"
+btrfs_qgroup_destroy_fcaps = "cap_sys_admin,cap_dac_override"
