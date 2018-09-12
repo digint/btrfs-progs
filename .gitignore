@@ -10,6 +10,7 @@ Documentation/*.gz
 Documentation/*.html
 btrfs
 btrfs.static
+btrfs-*.separated
 btrfs-map-logical
 btrfs-fragments
 btrfsck
