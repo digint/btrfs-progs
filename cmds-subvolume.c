@@ -1226,6 +1226,7 @@ out:
 static const char subvolume_cmd_group_info[] =
 "manage subvolumes: create, delete, list, etc";
 
+#ifndef BTRFS_SEPARATED_BUILD
 const struct cmd_group subvolume_cmd_group = {
 	subvolume_cmd_group_usage, subvolume_cmd_group_info, {
 		{ "create", cmd_subvol_create, cmd_subvol_create_usage, NULL, 0 },
@@ -1249,3 +1250,4 @@ int cmd_subvolume(int argc, char **argv)
 {
 	return handle_command_group(&subvolume_cmd_group, argc, argv);
 }
+#endif

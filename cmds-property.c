@@ -408,6 +408,7 @@ static int cmd_property_list(int argc, char **argv)
 static const char property_cmd_group_info[] =
 "modify properties of filesystem objects";
 
+#ifndef BTRFS_SEPARATED_BUILD
 const struct cmd_group property_cmd_group = {
 	property_cmd_group_usage, property_cmd_group_info, {
 		{ "get", cmd_property_get,
@@ -424,3 +425,4 @@ int cmd_property(int argc, char **argv)
 {
 	return handle_command_group(&property_cmd_group, argc, argv);
 }
+#endif

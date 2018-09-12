@@ -1788,6 +1788,7 @@ out:
 static const char scrub_cmd_group_info[] =
 "verify checksums of data and metadata";
 
+#ifndef BTRFS_SEPARATED_BUILD
 const struct cmd_group scrub_cmd_group = {
 	scrub_cmd_group_usage, scrub_cmd_group_info, {
 		{ "start", cmd_scrub_start, cmd_scrub_start_usage, NULL, 0 },
@@ -1802,3 +1803,4 @@ int cmd_scrub(int argc, char **argv)
 {
 	return handle_command_group(&scrub_cmd_group, argc, argv);
 }
+#endif
